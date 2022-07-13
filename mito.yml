@@ -1,0 +1,9 @@
+name: mito
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - biopython=1.68=py27_0
+  - minimap2=2.24
+  - samtools=1.15.1
