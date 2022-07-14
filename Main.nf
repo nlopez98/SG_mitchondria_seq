@@ -1,8 +1,10 @@
 #!/usr/bin/env nextflow
 
-params.reads = '/mnt/mito/Platinum/Nanopore/concatenated/*.fastq.gz'
+params.reads = '/mnt/mito/Platinum/PacBio/tanhjj-mitochondria/CCS/*.fastq.gz'
+params.type = 'PacBio'
 
 // Create channel
+
 ch_reads = Channel
                 .fromFilePairs( params.reads , size: 1  )
                 .map {  item ->
@@ -10,6 +12,7 @@ ch_reads = Channel
                         files  = item[1];
                         return [ sampleName, files ]  }
 
+ch_sequencing_type = Channel.value(params.type)
 
 // Compute and codes
 params.yaml = "mito.yml"
@@ -63,6 +66,7 @@ process mapping {
         input:
         tuple val(sample_id) , path(reads) from ch_reads
         path (indexed_ref) from ch_indexed_ref
+	val (sequencing_type) from ch_sequencing_type
 
         output:
         tuple val(sample_id), file('*.bam') into ch_minimap_bam
@@ -71,7 +75,12 @@ process mapping {
 
         script:
         """
-	minimap2 -ax map-ont -t 16 ${indexed_ref} ${reads} | samtools view -bS - -o ${sample_id}.bam
+	if [[ ${sequencing_type} = "Nanopore" ]]
+	then 
+		minimap2 -ax map-ont -t 16 ${indexed_ref} ${reads} | samtools view -bS - -o ${sample_id}.bam
+	else
+		minimap2 -ax map-hifi -t 16 ${indexed_ref} ${reads} | samtools view -bS - -o ${sample_id}.bam
+	fi
         """
 }
 process samtools_preprocessing {
