@@ -4,6 +4,8 @@ This is a repo for the mapping of sequencing libraries to a reference genome, de
 
 The pipeline runs the minimap2 algorithm on the sequencing libraries and allows one to determine the number of reads mapped to the reference genome and the mitochondrial genome (specifically). 
 
+The seventh and eighth steps convert the sorted bam files into histograms that display the number of reads with each length, for data visualisation purposes.
+
 ## Setup 
 
 1. Install nextflow 
