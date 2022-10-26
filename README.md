@@ -22,3 +22,11 @@ The seventh and eighth steps convert the sorted bam files into histograms that d
 ```console
 foo@bar:~$ nextflow run Main.nf --reads '/mnt/mito/*.fastq.gz' --fasta '/mnt/mito/reference_genome/GRCh38.p13.genome.fa' --type 'Nanopore' -w '/mnt/mito/work/' 
 ```
+
+## Other Scripts 
+
+```console
+samtools_all.sh: Processes the .bam files produced in step 4 to .txt files with distribution of read lengths
+samtools_postprocessing.sh: Processes samtools statistics into summarized results
+Distribution.r: Collects the .txt files produced by samtools_all.sh and processes into .csv files and .png histograms
+concat_mito.py: Concatenates the reference genome
