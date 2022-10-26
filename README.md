@@ -25,7 +25,6 @@ foo@bar:~$ nextflow run Main.nf --reads '/mnt/mito/*.fastq.gz' --fasta '/mnt/mit
 
 ## Other Scripts 
 
-```console
 samtools_all.sh: Processes the .bam files produced in step 4 to .txt files with distribution of read lengths
 samtools_postprocessing.sh: Processes samtools statistics into summarized results
 Distribution.r: Collects the .txt files produced by samtools_all.sh and processes into .csv files and .png histograms
