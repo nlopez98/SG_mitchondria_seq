@@ -151,47 +151,25 @@ process samtools_postprocessing {
 	"""
 }
 
-process samtools_distribution {
-        publishDir path: "${params.publishdir}/7_distribution", mode: 'copy', pattern: '*_all_stats.txt'
-        publishDir path: "${params.publishdir}/7_distribution", mode: 'copy', pattern: '*no_sec_supp_stats.txt'
-        label "process_low"
-        conda "${params.yaml}"
-
-        input:
-        tuple val(sample_id), path(sorted_bam), path(no_sec_supp_bam) from ch_sorted_bam2
-        val (src) from params.src
-
-        output:
-        tuple val(sample_id), file("*_all_stats.txt"), file("*_no_sec_supp_stats.txt") into ch_txt
-
-
-        script:
-        """
-        ${src}/samtools_all.sh ${sample_id} ${sorted_bam} ${no_sec_supp_bam}
-
-        """
-}
-
 process samtools_histogram{
         publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats_histogram.png'
         publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats.csv'
         publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats_histogram.png'
         publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats.csv'
+        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats_histogram_log.png'
+        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats_histogram_log.png'
         label "process_low"
         conda "${params.yaml}"
 
         input:
         tuple val(sample_id), path(allstats), path(nosecsuppstats) from ch_txt
         val (src) from params.src
-        // 1001-1003 for PacBio must reshape the histogram
-        
+	#input from step 7
 
         output:
-        tuple val(sample_id), file('*_all_stats_histogram.png'), file('*_all_stats.csv'), file('*_no_sec_supp_stats_histogram.png'), file('*_no_sec_supp_stats.csv')
+        tuple val(sample_id), file('*_all_stats_histogram.png'), file('*_all_stats.csv'), file('*_no_sec_supp_stats_histogram.png'), file('*_no_sec_supp_stats.csv'), file('*_no_sec_supp_stats_histogram_log.png'), file('*_all_stats_histogram_log.png')
         script:
         """
-        ${src}/Distribution.r ${sample_id} ${allstats} ${nosecsuppstats} 
+        ${src}/Distribution.r ${sample_id} ${allstats} ${nosecsuppstats}
         """
-
-
-}
+	#produces a pair of histograpms for each (primary and all reads) setup - log frequency and raw frequency 
