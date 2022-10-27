@@ -11,6 +11,8 @@ The seventh and eighth steps convert the sorted bam files into histograms that d
 1. Install nextflow 
 2. Install conda - preferably miniconda 
 3. Download reference genome in your preferred location 
+4. Transfer fastq files (demultiplexed outputs for PacBio and passed fastq for NanoPore) and concatenate NanoPore files
+5. Run Main.nf, changing the nextflow config as needed
 
 ## Parameters
 1. --reads: path to the folder containing the sequencing libraries (Note: Both gzip'd FASTA and FASTQ formats may be used as input.) 
@@ -27,6 +29,6 @@ foo@bar:~$ nextflow run Main.nf --reads '/mnt/mito/*.fastq.gz' --fasta '/mnt/mit
 
 samtools_all.sh: Processes the .bam files produced in step 4 to .txt files with distribution of read lengths
 samtools_postprocessing.sh: Processes samtools statistics into summarized results
-
 Distribution.r: Collects the .txt files produced by samtools_all.sh and processes into .csv files and .png histograms
 concat_mito.py: Concatenates the reference genome
+ramRun.sh: An example of running of the Ram tool, for removing of nuclear mitochondrial DNA (NUMT) 
