@@ -27,8 +27,8 @@ foo@bar:~$ nextflow run Main.nf --reads '/mnt/mito/*.fastq.gz' --fasta '/mnt/mit
 
 ## Other Scripts 
 
-samtools_all.sh: Processes the .bam files produced in step 4 to .txt files with distribution of read lengths
-samtools_postprocessing.sh: Processes samtools statistics into summarized results
-Distribution.r: Collects the .txt files produced by samtools_all.sh and processes into .csv files and .png histograms
-concat_mito.py: Concatenates the reference genome
-ramRun.sh: An example of running of the Ram tool, for removing of nuclear mitochondrial DNA (NUMT) 
+samtools_all.sh: Processes the .bam files produced in step 4 to .txt files with distribution of read lengths <br>
+samtools_postprocessing.sh: Processes samtools statistics into summarized results <br>
+Distribution.r: Collects the .txt files produced by samtools_all.sh and processes into .csv files and .png histograms <br>
+concat_mito.py: Concatenates the reference genome <br>
+ramRun.sh: An example of running of the Ram tool, for removing of nuclear mitochondrial DNA (NUMT)  <br>
