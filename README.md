@@ -32,3 +32,6 @@ samtools_postprocessing.sh: Processes samtools statistics into summarized result
 Distribution.r: Collects the .txt files produced by samtools_all.sh and processes into .csv files and .png histograms <br>
 concat_mito.py: Concatenates the reference genome <br>
 ramRun.sh: An example of running of the Ram tool, for removing of nuclear mitochondrial DNA (NUMT)  <br>
+
+## Nextflow pipeline overview
+![image](https://user-images.githubusercontent.com/41785142/203908899-6a4c55c3-07f7-4d0f-bfaf-7cc4c98877c7.png)
