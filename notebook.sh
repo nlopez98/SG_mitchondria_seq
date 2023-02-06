@@ -1,0 +1,1 @@
+nextflow run Main.nf --reads '/mnt/volume1/DATA/Platinum/Nanopore/MCI_EC_X1/M004C_X1/20211129_1721_X1_FAP84110_383d99b2/fastq_pass/*.fastq.gz' --fasta '/mnt/volume1/DATA/reference_genome/GRCh38.p13.genome.fa' --type 'Nanopore' -w '/mnt/volume1/work/' --publishdir '/mnt/volume1/results/'

@@ -99,10 +99,10 @@ process samtools_preprocessing {
 
         script:
         """
-	#with secondary and supplementary mapped reads 
+#with secondary and supplementary mapped reads 
         samtools sort -o ${sample_id}_all.sorted.bam -@ 8 ${bam}
 	
-	#secondary and supplementary mapped reads removed 
+#secondary and supplementary mapped reads removed 
 	samtools view -b -F 0x800 -F 0x100 -@ 8 ${bam} | samtools sort -o ${sample_id}_no_secondary_supplementary.sorted.bam -@ 8
 
         """
@@ -143,7 +143,7 @@ process samtools_postprocessing {
 	val (src) from params.src
 
 	output:
-	tuple val(sample_id), file("*_results")
+	tuple val(sample_id), file("*_results") into ch_txt
 	
 	script:
 	"""
@@ -151,25 +151,27 @@ process samtools_postprocessing {
 	"""
 }
 
-process samtools_histogram{
-        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats_histogram.png'
-        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats.csv'
-        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats_histogram.png'
-        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats.csv'
-        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats_histogram_log.png'
-        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats_histogram_log.png'
-        label "process_low"
-        conda "${params.yaml}"
-
-        input:
-        tuple val(sample_id), path(allstats), path(nosecsuppstats) from ch_txt
-        val (src) from params.src
-	#input from step 7
-
-        output:
-        tuple val(sample_id), file('*_all_stats_histogram.png'), file('*_all_stats.csv'), file('*_no_sec_supp_stats_histogram.png'), file('*_no_sec_supp_stats.csv'), file('*_no_sec_supp_stats_histogram_log.png'), file('*_all_stats_histogram_log.png')
-        script:
-        """
-        ${src}/Distribution.r ${sample_id} ${allstats} ${nosecsuppstats}
-        """
-	#produces a pair of histograpms for each (primary and all reads) setup - log frequency and raw frequency 
+//process samtools_histogram {
+//        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats_histogram.png'
+//        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats.csv'
+//        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats_histogram.png'
+//        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats.csv'
+//        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_no_sec_supp_stats_histogram_log.png'
+//        publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats_histogram_log.png'
+//        label "process_low"
+//        conda "${params.yaml}"
+//
+//        input:
+//        tuple val(sample_id), path(allstats), path(nosecsuppstats) from ch_txt
+//        val (src) from params.src
+//	// input from step 7
+//
+//        output:
+//        tuple val(sample_id), file('*_all_stats_histogram.png'), file('*_all_stats.csv'), file('*_no_sec_supp_stats_histogram.png'), file('*_no_sec_supp_stats.csv'), file('*_no_sec_supp_stats_histogram_log.png'), file('*_all_stats_histogram_log.png')
+//        script:
+//        """
+//        ${src}/Distribution.r ${sample_id} ${allstats} ${nosecsuppstats}
+//        """
+//	// produces a pair of histograpms for each (primary and all reads) setup - log frequency and raw frequency
+//
+//} 
