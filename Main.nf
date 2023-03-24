@@ -151,6 +151,27 @@ process samtools_postprocessing {
 	"""
 }
 
+process samtools_distribution {
+        publishDir path: "${params.publishdir}/7_distribution", mode: 'copy', pattern: '*_all_stats.txt'
+        publishDir path: "${params.publishdir}/7_distribution", mode: 'copy', pattern: '*no_sec_supp_stats.txt'
+        label "process_low"
+        conda "${params.yaml}"
+
+        input:
+        tuple val(sample_id), path(sorted_bam), path(no_sec_supp_bam) from ch_sorted_bam2
+        val (src) from params.src
+
+        output:
+        tuple val(sample_id), file("*_all_stats.txt"), file("*_no_sec_supp_stats.txt") into ch_txt
+
+
+        script:
+        """
+        ${src}/samtools_all.sh ${sample_id} ${sorted_bam} ${no_sec_supp_bam}
+
+        """
+}
+
 process samtools_histogram{
         publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats_histogram.png'
         publishDir path: "${params.publishdir}/8_histogram", mode: 'copy', pattern: '*_all_stats.csv'
